@@ -1,0 +1,85 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid mt-3">
+    <br>
+    <div class="row">
+        <div class="col-md-auto">
+            <img class="mr-3" src="{{book.cover.url}}">
+            <hr>
+            <div style="font-size: 60%; text-align: left;">
+                {{book.added_at|date:"SHORT_DATE_FORMAT"}}
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col" align="left">
+                    <h4 style="color: black">{{book.name}}</h4>
+                    <h6>Авторы:
+                        {% for author in book.get_authors_list %}
+                        <a href="{% url 'author:author_page' author_pk=author.pk %}" style="color: black">
+                            {{author.name}}</a>
+                        {% endfor %}
+                    </h6>
+                    <h6><a>Год публикации: {{book.published_year}}</a></h6>
+                </div>
+                <div class="col" align="right">
+                    <h4 id="l1" style="color: #0066CC">★ {{book.rating|floatformat:2}}</h4>
+                    <script>
+$(document).ready(function(){
+	$('#b1').click(function(){
+  		$('#f1').toggle(500);
+  		$('#b1').hide();
+  		$('#l1').hide();
+  	});
+});
+
+                    </script>
+                    <button id="b1"
+                            style="font-size: 70%; width: 22%; border-radius: 2px; background-color: #DCDCDC; color: black; border: none;">
+                        ☆ Оценить
+                    </button>
+                    <form style="display: none;" id="f1" method="post"
+                          action="{% url 'book:change_rating' book_pk=book.pk %}">
+                        {% csrf_token %}
+                        <div style="font-size: 80%; font-weight: bold; color: #666666;">
+                            {% bootstrap_form rating_form show_label=False %}
+                            <button type="submit"
+                                    style="font-size: 80%; width: 20%; border-radius: 2px; background-color: #0066CC; color: white; border: none;">
+                                Оценить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br>
+            <div style="font-size: 70%; text-align: justify">{{book.description}}</div>
+        </div>
+    </div>
+    <br>
+    {% if request.user.is_staff %}
+    <div class="row-md-auto" align="right">
+        <a href="{% url 'book:book_edit' pk=book.pk %}"
+           style="color: #555555; font-size: 110%; margin-right: 15px;">Редактировать</a>
+        <a href="{% url 'book:book_delete' pk=book.pk %}" style="color: #555555; font-size: 110%">Удалить</a>
+    </div>
+    {% endif %}
+    {% if book.review %}
+    <br><br>
+    <section class="col border py-2" style="border-radius: 2px;">
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <h5>Рецензия</h5>
+            </div>
+            <div class="row" style="font-size: 80%; text-align: justify">
+                <p>{{book.review.text}}</p>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    <br>
+    {% include 'book/comments.html' %}
+</div>
+{% endblock %}

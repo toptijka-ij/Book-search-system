@@ -1,0 +1,15 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+{% block content %}
+<form method="post" action="">
+    {% csrf_token %}
+    <br>
+    <h4>Вы уверенны, что хотите удалить автора {{object.name}}?</h4>
+    <br>
+    <div align="left">
+        {% buttons submit='Удалить' %} {% endbuttons %}
+    </div>
+</form>
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+
+<ul class="col nav">
+    <li class="nav-item" style="position: absolute; left: 0px">
+        <h2 style="color: black; font-size: 150%">Последние загруженные книги</h2>
+    </li>
+    {% include 'layout/sort.html' %}
+</ul>
+<br>
+{% if books %}
+<ul class="list-unstyled">
+    {% for book in books %}
+    {% include 'layout/about_book.html' %}
+    {% endfor %}
+</ul>
+{% else %}
+<p>Книжек совсем нет...</p>
+{% endif %}
+{% bootstrap_pagination books %}
+{% endblock %}

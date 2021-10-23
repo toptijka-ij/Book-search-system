@@ -1,0 +1,26 @@
+{% if request.user == comment.user %}
+<div class="row-md-auto">
+    <div class="col" style="position: absolute; left: 0px"><h6>{{comment.user.username}}</h6></div>
+    <div class="col" align="right">
+        <a href="{% url 'comment:comment_edit' pk=comment.pk %}"
+           style="background-color: white; border: none;  color: #666666; font-size: 70%; margin-right: 10px;">
+            Редактировать</a>
+        <a href="{% url 'comment:comment_delete' pk=comment.pk %}"
+           style="background-color: white; border: none;  color: #666666; font-size: 70%">
+            Удалить</a>
+    </div>
+</div>
+{% elif request.user.is_staff %}
+<div class="row-md-auto">
+    <div class="col" style="position: absolute; left: 0px"><h6>{{comment.user.username}}</h6></div>
+    <div class="col" align="right">
+        <a href="{% url 'comment:comment_delete' pk=comment.pk %}"
+           style="background-color: white; border: none;  color: #666666; font-size: 70%">
+            Удалить</a>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <h6>{{comment.user.username}}</h6>
+</div>
+{% endif %}

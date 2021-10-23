@@ -1,0 +1,16 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+<div class="container-fluid mt-3">
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <br>
+        <div align="right">
+            {% buttons submit='Сохранить' %} {% endbuttons %}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

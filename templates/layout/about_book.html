@@ -1,0 +1,35 @@
+<li class="media my-5 p-3 border">
+    <div class="col-md-auto">
+        <a href="{% url 'book:detail' book_pk=book.pk %}">
+            <img class="mr-3" src="{{book.cover.url}}">
+        </a>
+        <hr>
+        <div style="font-size: 60%; text-align: left;">
+            {{book.added_at|date:"SHORT_DATE_FORMAT"}}
+        </div>
+    </div>
+    <div class="media-body">
+        <div class="row">
+
+            <div class="col" align="left">
+                <h4><a href="{% url 'book:detail' book_pk=book.pk %}"
+                       style="color: black">{{book.name}}</a></h4>
+                <h6><a>Жанр: {{book.genre.name|lower}}</a></h6>
+                <h6>Авторы:
+                    {% for author in book.get_authors_list %}
+                    <a href="{% url 'author:author_page' author_pk=author.pk %}" style="color: black">
+                        {{author.name}}</a>
+                    {% endfor %}
+                </h6>
+                <h6><a>Год публикации: {{book.published_year}}</a></h6>
+            </div>
+            <div class="col" align="right">
+                <h4 style="color: #0066CC">★ {{book.rating|floatformat:2}}</h4>
+            </div>
+        </div>
+        <br>
+        <div style="font-size: 70%; text-align: justify">{{book.description}}</div>
+
+    </div>
+
+</li>

@@ -1,0 +1,78 @@
+{% load bootstrap4 %}
+
+{% if user.is_authenticated %}
+<form action="{% url 'comment:add_comment' book_pk=book.pk %}" method="post" id="formComment">
+    {% csrf_token %}
+    <input type="hidden" name="parent" id="contactparent" value="">
+    <textarea class="form-control border" rows="5" name="text" id="contactcomment" required=""
+              maxlength="500"></textarea>
+    <br>
+    <div align="right">
+        {% buttons submit='Добавить' %} {% endbuttons %}
+    </div>
+</form>
+{% endif %}
+
+
+{% if comments %}
+<section class="col border py-2" style="border-radius: 2px;">
+    <div class="row-md-auto" style="margin-top: 10px; margin-bottom: 10px;">
+        <h5>Комментарии</h5>
+    </div>
+</section>
+<section class="col border py-2" style="border-radius: 2px;">
+    <div class="container-fluid mt-3">
+        {% for comment in comments %}
+        {% include 'comment/edit_delete_comment.html' with comment=comment %}
+        <div class="row" style="font-size: 80%; text-align: justify">
+            <p>{{comment.text}}</p>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="row-md-auto">
+            <div class="col" style="font-size: 60%; position: absolute; left: 0px"><p>{{comment.created_at}}</p></div>
+            <div class="col" align="right">
+                <a href="#formComment"
+                   onclick="addComment('{{comment.user.username}}', '{{comment.pk}}')"
+                   style="border-radius: 2px; background-color: #EEEEEE; color: black; border: none;  color: #666666; font-size: 55%">
+                    Ответить
+                </a>
+                <script>
+        function addComment(name, id) {
+            document.getElementById("contactparent").value = id;
+            document.getElementById("contactcomment").innerText = `${name}, `
+        }
+
+
+                </script>
+            </div>
+        </div>
+        {% else %}
+        <div class="row" style="font-size: 60%; text-align: right">
+            <p>{{comment.created_at}}</p>
+        </div>
+        {% endif %}
+
+
+        {% for child_comment in comment.children %}
+        <div class="container-fluid mt-4">
+            <div class="col ver-line" style="border-left: 1px solid #DDDDDD">
+                {% include 'comment/edit_delete_comment.html' with comment=child_comment %}
+                <div class="row" style="font-size: 80%; text-align: justify; margin-left: 5px">
+                    <p>{{child_comment.text}}</p>
+                </div>
+                <div class="row" style="font-size: 60%; text-align: left; margin-left: 5px">
+                    <p>{{child_comment.created_at}}</p>
+                </div>
+            </div>
+        </div>
+        <hr style="border: 1px solid #EEEEEE; border-bottom-width: 0;">
+        {% endfor %}
+        <hr>
+        {% endfor %}
+    </div>
+</section>
+{% else %}
+<br>
+<h5>Комментариев к данной книге пока нет</h5>
+<br>
+{% endif %}

@@ -1,0 +1,15 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+{% block content %}
+<form method="post" action="">
+    {% csrf_token %}
+    <br>
+    <h4>{{comment.user.username}}, вы уверенны, что хотите удалить свой комментарий?</h4>
+    <br>
+    <div align="left">
+        {% buttons submit='Удалить' %} {% endbuttons %}
+    </div>
+</form>
+
+
+{% endblock %}

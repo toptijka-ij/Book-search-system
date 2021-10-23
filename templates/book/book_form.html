@@ -1,0 +1,31 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+<div class="container-fluid mt-3">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <br>
+        <div class="col">
+            {% if book %}
+            <div class="row-mr-auto" align="right">
+                {% if book.review %}
+                <a href="{% url 'review:review_edit' pk=book.review.pk %}" style="font-size: 110%; margin-right: 10px;">
+                    Редактировать рецензию</a>
+                <a href="{% url 'review:review_delete' pk=book.review.pk %}" style="font-size: 110%;">
+                    Удалить рецензию</a>
+                {% else %}
+                <a href="{% url 'review:review_add' book_pk=book.pk %}" style="font-size: 110%">Добавить рецензию</a>
+                {% endif %}
+            </div>
+            {% endif %}
+            <br>
+            <div class="row-md-auto" align="right">
+                {% buttons submit='Сохранить' %} {% endbuttons %}
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

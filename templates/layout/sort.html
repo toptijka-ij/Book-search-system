@@ -1,0 +1,8 @@
+<li class="nav-item dropdown" style="position: absolute; right: 0px">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+       aria-haspopup="true" aria-expanded="false" style="color: black">Сортировать</a>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="{% url 'main:index' sort='date' %}" style="color: black">По дате добавления</a>
+        <a class="dropdown-item" href="{% url 'main:index' sort='rating' %}" style="color: black">По рейтингу</a>
+    </div>
+</li>

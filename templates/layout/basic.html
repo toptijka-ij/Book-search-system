@@ -1,0 +1,90 @@
+{% load bootstrap4 %}
+{% load static %}
+<! DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=l, shrink-to-fit=no">
+    <title>
+        {% block title %}
+        Главная
+        {% endblock %}
+        - Система поиска книг
+    </title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+    {% bootstrap_javascript jquery='slim' %}
+</head>
+<body class="container-fluid">
+<header class="mb-3">
+    <h1 class="display-1 text-center">
+        <a class="nav-link root" href="{% url 'main:base' %}" style="color: black; font-size: 80%">
+            Система поиска книг</a>
+    </h1>
+</header>
+
+
+<div class="row">
+    <ul class="col  nav justify-content-end border">
+
+        <li style="position: absolute; left: 0px;">
+            <form class="col-md-auto form-inline" action="{% url 'main:search' %}" method="get">
+                {% bootstrap_form search_form %}
+                {% bootstrap_button content='Искать' button_type='submit' %}
+            </form>
+        </li>
+        {% if request.user.is_staff %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+               aria-haspopup="true" aria-expanded="false" style="color: black">Добавить</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'book:genre_add' %}" style="color: black">Жанр</a>
+                <a class="dropdown-item" href="{% url 'author:author_add' %}" style="color: black">Автора</a>
+                <a class="dropdown-item" href="{% url 'book:book_add' %}" style="color: black">Книгу</a>
+            </div>
+        </li>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+               aria-haspopup="true" aria-expanded="false" style="color: black">Профиль</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'main:profile_change' %}" style="color: black">Изменить личные
+                    данные</a>
+                <a class="dropdown-item" href="{% url 'main:password_change' %}" style="color: black">Изменить
+                    пароль</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'main:profile_delete' %}" style="color: black">Удалить</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'main:logout' %}" style="color: black">Выйти</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'main:register' %}" style="color: black">Регистрация</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'main:login' %}" style="color: black">Вход</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+<div class="row">
+    <nav class="col-md-auto nav flex-column border">
+        {% for genre in genres %}
+        <a class="nav-link root font-weight" href="{% url 'book:by_genre' genre_pk=genre.pk sort='date' %}"
+           style="color: black">{{genre.name}}</a>
+        {% endfor %}
+    </nav>
+    <section class="col border py-2">
+        {% bootstrap_messages %}
+        {% block content %}
+        {% endblock %}
+    </section>
+</div>
+<footer class="mt-2">
+    <p class="text-right font-italic">&copy;читатели.</p>
+</footer>
+</body>
+</html>

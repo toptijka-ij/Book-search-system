@@ -1,0 +1,41 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Результаты поиска по запросу "{{ keyword }}"</h3>
+{% if results.b_results %}
+<br>
+<h5>Найдено {{results.b_results.count}} книг</h5>
+<li class="media my-5 p-3 border">
+    <div class="media-body">
+        {% for book in results.b_results %}
+        <hr>
+        <h5><a href="{% url 'book:detail' book_pk=book.pk %}" style="color: black">
+            {{book.name}}</a>
+            ,
+            {% for author in book.get_authors_list %}
+            <a href="{% url 'author:author_page' author_pk=author.pk %}" style="color: black">
+                {{author.name}}</a>
+            {% endfor %}
+        </h5>
+        <hr>
+        {% endfor %}
+    </div>
+</li>
+{% elif results.a_results %}
+<br>
+<h5>Найдено {{results.a_results.count}} авторов</h5>
+<li class="media my-5 p-3 border">
+    <div class="media-body">
+        {% for author in results.a_results %}
+        <hr>
+        <h5><a href="{% url 'author:author_page' author_pk=author.pk %}" style="color: black">
+            {{author.name}}</a>
+        </h5>
+        <hr>
+        {% endfor %}
+    </div>
+</li>
+{% else %}
+<h5>По вашему запросу нет результатов</h5>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+<br>
+<h5>Имя: {{author.name}}</h5>
+{% if author.biography %}
+<h5>Биография: </h5>
+<div style="font-size: 90%; text-align: justify">{{author.biography}}</div>
+{% endif %}
+<br>
+<h5>Книги автора</h5>
+<li class="media my-5 p-3 border">
+    <div class="media-body">
+        {% for book in books %}
+        <hr>
+        <h6><a href="{% url 'book:detail' book_pk=book.pk %}" style="color: black">
+            {{book.name}}</a>
+        </h6>
+        <hr>
+        {% endfor %}
+    </div>
+</li>
+{% if request.user.is_staff %}
+<div class="row-md-auto" align="right">
+    <a href="{% url 'author:author_edit' pk=author.pk %}" style="color: black; font-size: 110%; margin-right: 10px">Редактировать</a>
+    <a href="{% url 'author:author_delete' pk=author.pk %}" style="color: black; font-size: 110%">Удалить</a>
+</div>
+{% endif %}
+<br>
+{% endblock %}

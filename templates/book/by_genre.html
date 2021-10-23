@@ -1,0 +1,22 @@
+{% extends "layout/basic.html" %}
+{% load static %}
+{% load bootstrap4 %}
+{% block title %}{{genre}}{% endblock %}
+{% block content %}
+<ul class="col nav">
+    <li class="nav-item" style="position: absolute; left: 0px">
+        <h2 class="mb-2">{{genre}}</h2>
+    </li>
+    {% include 'layout/sort.html' %}
+</ul>
+{% if books %}
+<ul class="list-unstyled">
+    {% for book in books %}
+    {% include 'layout/about_book.html' %}
+    {% endfor %}
+</ul>
+{% else %}
+<h4>Книжек совсем нет...</h4>
+{% endif %}
+{% bootstrap_pagination books %}
+{% endblock %}
